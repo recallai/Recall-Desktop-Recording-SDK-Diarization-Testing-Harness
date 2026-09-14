@@ -12,7 +12,7 @@
   },
   "scripts": {
     "start": "electron .",
-    "setup:google-meet": "node setup-google-meet.js"
+    "test": "node --test"
   },
   "devDependencies": {
     "electron": "^42.3.3"

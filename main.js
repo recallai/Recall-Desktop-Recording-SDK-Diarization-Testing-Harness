@@ -21,7 +21,7 @@ function send(channel, data) {
 function createWindow() {
   mainWindow = new BrowserWindow({
     width: 800,
-    height: 650,
+    height: 720,
     minWidth: 520,
     minHeight: 480,
     show: false,
@@ -55,6 +55,7 @@ function action(handler) {
 
 function registerIpc() {
   ipcMain.handle('recorder:get-snapshot', () => recorder.getSnapshot());
+  ipcMain.handle('recorder:initialize-permissions', action(() => recorder.initializePermissions()));
   ipcMain.handle('recorder:start', action(() => recorder.startRecording()));
   ipcMain.handle('recorder:stop', action(() => recorder.stopRecording()));
   ipcMain.handle('recorder:export', action(async () => {

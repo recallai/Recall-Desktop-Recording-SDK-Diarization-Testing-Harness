@@ -24,6 +24,7 @@ h2 { margin-bottom: 0; font-size: 1rem; }
 
 .status-row,
 .controls,
+.permission-row,
 .transcript-heading {
   display: flex;
   align-items: center;
@@ -36,6 +37,15 @@ h2 { margin-bottom: 0; font-size: 1rem; }
 .dot.detected { background: #159957; box-shadow: 0 0 0 4px #1599571a; }
 .phase { color: #667085; font-size: .9rem; text-transform: capitalize; }
 .controls { margin-top: 22px; flex-wrap: wrap; }
+.permission-row {
+  justify-content: space-between;
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px solid #e6e9ef;
+}
+.permission-row div { min-width: 0; }
+.permission-row strong { display: block; font-size: .9rem; }
+.permission-row p { margin: 2px 20px 0 0; color: #667085; font-size: .82rem; }
 
 button {
   min-height: 42px;
@@ -50,6 +60,7 @@ button {
 button:disabled { opacity: .48; cursor: not-allowed; }
 #start { color: white; background: #2364dc; }
 #stop { color: #9f1d27; background: white; border-color: #e3aeb2; }
+#permissions { flex: 0 0 auto; color: #344054; background: white; border-color: #cfd5df; }
 .export { margin-left: auto; color: #344054; background: white; border-color: #cfd5df; }
 .spinner {
   display: inline-block;
@@ -79,4 +90,7 @@ article p { margin: 0; white-space: pre-wrap; }
 @media (max-width: 520px) {
   main { margin: 20px auto; }
   .export { width: 100%; margin-left: 0; }
+  .permission-row { align-items: stretch; flex-direction: column; }
+  .permission-row p { margin-right: 0; }
+  #permissions { width: 100%; }
 }

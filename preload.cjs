@@ -8,6 +8,7 @@ function subscribe(channel, callback) {
 
 contextBridge.exposeInMainWorld('recorder', Object.freeze({
   getSnapshot: () => ipcRenderer.invoke('recorder:get-snapshot'),
+  initializePermissions: () => ipcRenderer.invoke('recorder:initialize-permissions'),
   start: () => ipcRenderer.invoke('recorder:start'),
   stop: () => ipcRenderer.invoke('recorder:stop'),
   export: () => ipcRenderer.invoke('recorder:export'),

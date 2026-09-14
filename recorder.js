@@ -36,7 +36,14 @@ async function createUploadToken(apiUrl, apiKey) {
   return uploadToken;
 }
 
-function createRecorder({ sdk, apiUrl, apiKey, getUploadToken = createUploadToken }) {
+function createRecorder({
+  sdk,
+  apiUrl,
+  apiKey,
+  getUploadToken = createUploadToken,
+  platform = process.platform,
+  arch = process.arch,
+}) {
   const events = new EventEmitter();
   const meetings = new Map();
   const transcript = [];
@@ -46,6 +53,8 @@ function createRecorder({ sdk, apiUrl, apiKey, getUploadToken = createUploadToke
   let status = 'idle';
   let error = null;
   let closing = false;
+  let browserAutomationStatus = 'unknown';
+  let permissionRequestPending = false;
 
   const currentMeeting = () => meetings.values().next().value || null;
   const getState = () => ({
@@ -56,6 +65,8 @@ function createRecorder({ sdk, apiUrl, apiKey, getUploadToken = createUploadToke
     meetingDetected: meetings.size > 0,
     meeting: currentMeeting(),
     transcriptCount: transcript.length,
+    browserAutomationStatus,
+    permissionRequestPending,
   });
   const getSnapshot = () => ({ state: getState(), transcript: [...transcript] });
   const emitState = () => events.emit('state', getState());
@@ -112,6 +123,14 @@ function createRecorder({ sdk, apiUrl, apiKey, getUploadToken = createUploadToke
     emitState();
   }
 
+  function onPermissionStatus({ permission, status: permissionStatus }) {
+    if (permission !== 'browser-automation') return;
+    browserAutomationStatus = permissionStatus;
+    permissionRequestPending = false;
+    error = null;
+    emitState();
+  }
+
   const listeners = {
     'meeting-detected': onMeetingDetected,
     'meeting-updated': onMeetingUpdated,
@@ -119,6 +138,7 @@ function createRecorder({ sdk, apiUrl, apiKey, getUploadToken = createUploadToke
     'recording-started': onRecordingStarted,
     'recording-ended': onRecordingEnded,
     'realtime-event': onTranscript,
+    'permission-status': onPermissionStatus,
     error: (sdkError) => setError(sdkError?.message || 'The Desktop SDK reported an error.'),
   };
   for (const [event, listener] of Object.entries(listeners)) sdk.addEventListener(event, listener);
@@ -166,6 +186,32 @@ function createRecorder({ sdk, apiUrl, apiKey, getUploadToken = createUploadToke
       status = 'idle';
       setError(cause);
       throw cause;
+    }
+  }
+
+  async function initializePermissions() {
+    if (!ready) throw new Error('The Desktop SDK is not ready yet.');
+    if (platform !== 'darwin' || arch !== 'arm64') {
+      throw new Error('Google Meet Raw Media requires an Apple Silicon Mac running macOS 13 or later.');
+    }
+    if (status !== 'idle') throw new Error('Stop the active recording before initializing permissions.');
+    if (permissionRequestPending || browserAutomationStatus === 'granted') return;
+
+    permissionRequestPending = true;
+    browserAutomationStatus = 'requesting';
+    error = null;
+    emitState();
+
+    try {
+      await sdk.requestPermission('browser-automation');
+      if (browserAutomationStatus === 'requesting') browserAutomationStatus = 'requested';
+    } catch (cause) {
+      browserAutomationStatus = 'error';
+      setError(cause);
+      throw cause;
+    } finally {
+      permissionRequestPending = false;
+      emitState();
     }
   }
 
@@ -244,6 +290,7 @@ function createRecorder({ sdk, apiUrl, apiKey, getUploadToken = createUploadToke
   return {
     events,
     initialize,
+    initializePermissions,
     startRecording,
     stopRecording,
     getSnapshot,

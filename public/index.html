@@ -22,6 +22,13 @@
         </button>
         <button id="export" class="export" type="button" disabled>Export JSON</button>
       </div>
+      <div class="permission-row">
+        <div>
+          <strong>Google Meet browser access</strong>
+          <p id="permission-status" aria-live="polite">Initialize the recorder to check browser access.</p>
+        </div>
+        <button id="permissions" type="button" aria-describedby="permission-status" disabled>Enable access</button>
+      </div>
       <p id="error" class="error" role="alert" hidden></p>
     </header>
 
