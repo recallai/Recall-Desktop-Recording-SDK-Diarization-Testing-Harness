@@ -1,0 +1,19 @@
+{
+  "name": "recallai-meets-raw-media-demo",
+  "version": "1.0.0",
+  "description": "A minimal demo of Google Meets Raw Media on the Recall.ai Desktop SDK",
+  "license": "UNLICENSED",
+  "author": "Connor Lurring",
+  "type": "commonjs",
+  "main": "index.js",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "start": "node --env-file=.env.local index.js",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "@recallai/desktop-sdk": "^2.0.31"
+  }
+}
