@@ -1,17 +1,21 @@
 {
   "name": "recallai-meets-raw-media-demo",
+  "productName": "Recall Meeting Recorder",
   "version": "1.0.0",
-  "description": "A minimal demo of Google Meets Raw Media on the Recall.ai Desktop SDK",
+  "description": "A minimal Electron harness for testing Google Meet diarization with the Recall Desktop SDK",
   "license": "UNLICENSED",
   "author": "Connor Lurring",
   "type": "commonjs",
-  "main": "index.js",
+  "main": "main.js",
   "engines": {
     "node": ">=22"
   },
   "scripts": {
-    "start": "node --env-file=.env.local index.js",
-    "test": "node --test"
+    "start": "electron .",
+    "setup:google-meet": "node setup-google-meet.js"
+  },
+  "devDependencies": {
+    "electron": "^42.3.3"
   },
   "dependencies": {
     "@recallai/desktop-sdk": "^2.0.31"

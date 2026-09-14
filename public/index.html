@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'none'; connect-src 'none'">
+  <title>Recall Meeting Recorder</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main>
+    <header>
+      <h1>Meeting Recorder</h1>
+      <div class="status-row">
+        <div class="meeting"><span id="dot" class="dot"></span><span id="meeting">No meeting detected</span></div>
+        <span id="phase" class="phase">Initializing</span>
+      </div>
+      <div class="controls">
+        <button id="start" type="button" disabled>Start recording</button>
+        <button id="stop" type="button" disabled>
+          <span id="spinner" class="spinner" hidden></span><span id="stop-label">Stop recording</span>
+        </button>
+        <button id="export" class="export" type="button" disabled>Export JSON</button>
+      </div>
+      <p id="error" class="error" role="alert" hidden></p>
+    </header>
+
+    <section aria-labelledby="transcript-title">
+      <div class="transcript-heading">
+        <h2 id="transcript-title">Live transcript</h2>
+        <span id="count" class="count">0 utterances</span>
+      </div>
+      <div id="transcript" aria-live="polite">
+        <p class="empty">Transcript will appear here while recording.</p>
+      </div>
+    </section>
+  </main>
+  <script src="renderer.js"></script>
+</body>
+</html>

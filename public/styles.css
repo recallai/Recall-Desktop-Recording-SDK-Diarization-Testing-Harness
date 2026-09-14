@@ -1,0 +1,82 @@
+:root {
+  color-scheme: light;
+  font: 16px/1.5 system-ui, sans-serif;
+  color: #172033;
+  background: #f5f7fb;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; }
+main { width: min(760px, calc(100% - 32px)); margin: 42px auto; }
+
+header,
+section {
+  background: white;
+  border: 1px solid #dfe4ee;
+  border-radius: 14px;
+  box-shadow: 0 8px 28px #1d2b4f0d;
+}
+
+header { padding: 24px; }
+h1, h2, p { margin-top: 0; }
+h1 { margin-bottom: 16px; font-size: 1.55rem; }
+h2 { margin-bottom: 0; font-size: 1rem; }
+
+.status-row,
+.controls,
+.transcript-heading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.status-row { justify-content: space-between; flex-wrap: wrap; }
+.meeting { display: flex; align-items: center; gap: 9px; font-weight: 650; }
+.dot { width: 10px; height: 10px; border-radius: 50%; background: #9aa4b2; }
+.dot.detected { background: #159957; box-shadow: 0 0 0 4px #1599571a; }
+.phase { color: #667085; font-size: .9rem; text-transform: capitalize; }
+.controls { margin-top: 22px; flex-wrap: wrap; }
+
+button {
+  min-height: 42px;
+  padding: 9px 16px;
+  border: 1px solid transparent;
+  border-radius: 9px;
+  font: inherit;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+button:disabled { opacity: .48; cursor: not-allowed; }
+#start { color: white; background: #2364dc; }
+#stop { color: #9f1d27; background: white; border-color: #e3aeb2; }
+.export { margin-left: auto; color: #344054; background: white; border-color: #cfd5df; }
+.spinner {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  margin-right: 7px;
+  vertical-align: -2px;
+  border: 2px solid #9f1d2740;
+  border-top-color: #9f1d27;
+  border-radius: 50%;
+  animation: spin .7s linear infinite;
+}
+
+[hidden] { display: none !important; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.error { margin: 16px 0 0; color: #a11b25; }
+section { margin-top: 18px; overflow: hidden; }
+.transcript-heading { justify-content: space-between; padding: 17px 20px; border-bottom: 1px solid #e6e9ef; }
+.count { color: #667085; font-size: .85rem; }
+#transcript { min-height: 260px; max-height: 55vh; overflow-y: auto; padding: 8px 20px 20px; }
+.empty { margin: 76px 0; color: #87909f; text-align: center; }
+article { padding: 14px 0; border-bottom: 1px solid #edf0f4; }
+article:last-child { border-bottom: 0; }
+article strong { display: block; margin-bottom: 4px; color: #2456a6; font-size: .85rem; }
+article p { margin: 0; white-space: pre-wrap; }
+
+@media (max-width: 520px) {
+  main { margin: 20px auto; }
+  .export { width: 100%; margin-left: 0; }
+}
